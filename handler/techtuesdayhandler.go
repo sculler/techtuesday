@@ -69,7 +69,7 @@ func (h TechTuesdayHandler) HandleTechTuesdayUpdate() gin.HandlerFunc {
 
 		techTuesdayId, err := strconv.Atoi(techTuesdayIdParam)
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, "invalid userId in path")
+			ctx.JSON(http.StatusBadRequest, "invalid techTuesdayId in path")
 			return
 		}
 
