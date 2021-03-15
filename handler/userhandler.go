@@ -63,6 +63,19 @@ func (h UserHandler) HandleUserUpdate() gin.HandlerFunc {
 		var user *domain.User
 		ctx.BindJSON(&user)
 
+		userIdParam := ctx.Param("userId")
+
+		userId, err := strconv.Atoi(userIdParam)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, "invalid userId in path")
+			return
+		}
+
+		if user.ID != uint(userId) {
+			ctx.JSON(http.StatusBadRequest, "invalid userId in path")
+			return
+		}
+
 		_, apiErr := h.UserService.Update(user)
 		if apiErr != nil {
 			ctx.JSON(apiErr.Code, apiErr.Error())
