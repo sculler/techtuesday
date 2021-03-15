@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sculler/techtuesdayapi/domain"
+	"github.com/sculler/techtuesday/domain"
 	"net/http"
 	"strconv"
 )
@@ -12,6 +12,18 @@ type TechTuesdayHandler struct {
 }
 
 const invalidUpdateParam = "invalid update path parameter"
+
+func (h TechTuesdayHandler) HandleTechTuesdayGetAll() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		techTuesdays, apiErr := h.TechTuesdayService.GetAll()
+		if apiErr != nil {
+			ctx.JSON(apiErr.Code, apiErr.Error())
+			return
+		}
+
+		ctx.JSON(http.StatusOK, techTuesdays)
+	}
+}
 
 func (h TechTuesdayHandler) HandleTechTuesdayGetById() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -33,22 +45,14 @@ func (h TechTuesdayHandler) HandleTechTuesdayGetById() gin.HandlerFunc {
 	}
 }
 
-func (h TechTuesdayHandler) HandleTechTuesdayGetAll() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		techTuesdays, apiErr := h.TechTuesdayService.GetAll()
-		if apiErr != nil {
-			ctx.JSON(apiErr.Code, apiErr.Error())
-			return
-		}
-
-		ctx.JSON(http.StatusOK, techTuesdays)
-	}
-}
-
 func (h TechTuesdayHandler) HandleTechTuesdayCreate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var techTuesday *domain.TechTuesday
-		ctx.BindJSON(&techTuesday)
+		err := ctx.BindJSON(&techTuesday)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, "unable to bind json")
+			return
+		}
 
 		resp, apiErr := h.TechTuesdayService.Create(techTuesday)
 		if apiErr != nil {
@@ -63,7 +67,11 @@ func (h TechTuesdayHandler) HandleTechTuesdayCreate() gin.HandlerFunc {
 func (h TechTuesdayHandler) HandleTechTuesdayUpdate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var techTuesday *domain.TechTuesday
-		ctx.BindJSON(&techTuesday)
+		err := ctx.BindJSON(&techTuesday)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, "unable to bind json")
+			return
+		}
 
 		techTuesdayIdParam := ctx.Param("techTuesdayId")
 

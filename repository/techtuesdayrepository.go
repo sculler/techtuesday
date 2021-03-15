@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"github.com/sculler/techtuesdayapi/database"
-	"github.com/sculler/techtuesdayapi/domain"
+	"github.com/sculler/techtuesday/database"
+	"github.com/sculler/techtuesday/domain"
 )
 
 type TechTuesdayRepository struct {
@@ -13,22 +13,6 @@ func NewTechTuesdayRepository(pgClient *database.PostgresClient) TechTuesdayRepo
 	return TechTuesdayRepository {
 		pgClient: pgClient,
 	}
-}
-
-func (t TechTuesdayRepository) Create(techTuesday *domain.TechTuesday) (int, error) {
-	result := t.pgClient.Create(techTuesday)
-	if result.Error != nil {
-		return 0, result.Error
-	}
-	return int(techTuesday.ID), nil
-}
-
-func (t TechTuesdayRepository) Delete(id int) (bool, error) {
-	result := t.pgClient.Delete(&domain.TechTuesday{}, id)
-	if result.Error != nil {
-		return false, result.Error
-	}
-	return true, nil
 }
 
 func (t TechTuesdayRepository) GetAll() ([]domain.TechTuesday, error){
@@ -49,6 +33,14 @@ func (t TechTuesdayRepository) GetById(id int) (*domain.TechTuesday, error) {
 	return techTuesday, nil
 }
 
+func (t TechTuesdayRepository) Create(techTuesday *domain.TechTuesday) (int, error) {
+	result := t.pgClient.Create(techTuesday)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return int(techTuesday.ID), nil
+}
+
 func (t TechTuesdayRepository) Update(techTuesday *domain.TechTuesday) (bool, error) {
 	result := t.pgClient.Save(techTuesday)
 	if result.Error != nil {
@@ -57,5 +49,10 @@ func (t TechTuesdayRepository) Update(techTuesday *domain.TechTuesday) (bool, er
 	return true, nil
 }
 
-
-
+func (t TechTuesdayRepository) Delete(id int) (bool, error) {
+	result := t.pgClient.Delete(&domain.TechTuesday{}, id)
+	if result.Error != nil {
+		return false, result.Error
+	}
+	return true, nil
+}

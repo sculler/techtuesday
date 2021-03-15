@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"context"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -11,10 +10,10 @@ type Logger struct {
 }
 
 type ILogger interface {
-	Debug(ctx context.Context, msg string, f ...zap.Field)
-	Error(ctx context.Context, msg string, f ...zap.Field)
-	Info(ctx context.Context, msg string, f ...zap.Field)
-	Fatal(msg string, f ...zap.Field)
+	Debug(msg string, fields ...zap.Field)
+	Error(msg string, fields ...zap.Field)
+	Info(msg string, fields ...zap.Field)
+	Fatal(msg string, fields ...zap.Field)
 }
 
 func NewLogger() (*Logger, error) {
@@ -70,32 +69,20 @@ func getLoggerConfig() zap.Config {
 	}
 }
 
-func (l *Logger) Debug(ctx context.Context, msg string, f ...zap.Field) {
-	fields := appendContextFields(ctx, f...)
+func (l *Logger) Debug(msg string, fields ...zap.Field) {
 	l.Zap.Debug(msg, fields...)
 }
 
-func (l *Logger) Info(ctx context.Context, msg string, f ...zap.Field) {
-	fields := appendContextFields(ctx, f...)
+func (l *Logger) Info(msg string, fields ...zap.Field) {
 	l.Zap.Info(msg, fields...)
 }
 
-func (l *Logger) Error(ctx context.Context, msg string, f ...zap.Field) {
-	fields := appendContextFields(ctx, f...)
+func (l *Logger) Error(msg string, fields ...zap.Field) {
 	l.Zap.Error(msg, fields...)
 }
 
 func (l *Logger) Fatal(msg string, f ...zap.Field) {
 	l.Zap.Fatal(msg, f...)
-}
-
-func appendContextFields(ctx context.Context, f ...zap.Field) []zap.Field {
-	fields := append(
-		f,
-		zap.String("ip", ctx.Value("ClientIP").(string)),
-		zap.String("req-id", ctx.Value("RequestId").(string)),
-	)
-	return fields
 }
 
 

@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sculler/techtuesdayapi/domain"
+	"github.com/sculler/techtuesday/domain"
 	"net/http"
 	"strconv"
 )
@@ -10,6 +10,19 @@ import (
 type UserHandler struct {
 	UserService domain.IUserService
 }
+
+func (h UserHandler) HandlerUserGetAll() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		users, apiErr := h.UserService.GetAll()
+		if apiErr != nil {
+			ctx.JSON(apiErr.Code, apiErr.Error())
+			return
+		}
+
+		ctx.JSON(http.StatusOK, users)
+	}
+}
+
 
 func (h UserHandler) HandleUserGetById() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -28,18 +41,6 @@ func (h UserHandler) HandleUserGetById() gin.HandlerFunc {
 		}
 
 		ctx.JSON(http.StatusOK, user)
-	}
-}
-
-func (h UserHandler) HandlerUserGetAll() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		users, apiErr := h.UserService.GetAll()
-		if apiErr != nil {
-			ctx.JSON(apiErr.Code, apiErr.Error())
-			return
-		}
-
-		ctx.JSON(http.StatusOK, users)
 	}
 }
 

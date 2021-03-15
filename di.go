@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/sculler/techtuesdayapi/database"
-	"github.com/sculler/techtuesdayapi/logger"
-	"github.com/sculler/techtuesdayapi/repository"
-	"github.com/sculler/techtuesdayapi/server"
-	"github.com/sculler/techtuesdayapi/service"
+	"github.com/sculler/techtuesday/database"
+	"github.com/sculler/techtuesday/logger"
+	"github.com/sculler/techtuesday/repository"
+	"github.com/sculler/techtuesday/server"
+	"github.com/sculler/techtuesday/service"
 )
 
 func provideTechTuesdayRepository(pgClient *database.PostgresClient) repository.TechTuesdayRepository {

@@ -1,7 +1,7 @@
 package domain
 
 import (
-	apierror "github.com/sculler/techtuesdayapi/error"
+	apierror "github.com/sculler/techtuesday/error"
 	"gorm.io/gorm"
 )
 

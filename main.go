@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/sculler/techtuesdayapi/database"
-	"github.com/sculler/techtuesdayapi/domain"
-	"github.com/sculler/techtuesdayapi/logger"
+	"github.com/sculler/techtuesday/database"
+	"github.com/sculler/techtuesday/domain"
+	"github.com/sculler/techtuesday/logger"
 	"go.uber.org/zap"
 )
 

@@ -2,9 +2,9 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sculler/techtuesdayapi/domain"
-	"github.com/sculler/techtuesdayapi/handler"
-	"github.com/sculler/techtuesdayapi/logger"
+	"github.com/sculler/techtuesday/domain"
+	"github.com/sculler/techtuesday/handler"
+	"github.com/sculler/techtuesday/logger"
 	"go.uber.org/zap"
 )
 
@@ -37,7 +37,6 @@ func NewServer(
 func (s Server) setupRoutes() {
 
 	// Initialize Handlers
-
 	techTuesdayHandler := handler.TechTuesdayHandler{
 		TechTuesdayService: s.techTuesdayService,
 	}
@@ -47,15 +46,13 @@ func (s Server) setupRoutes() {
 	}
 
 	// TechTuesday endpoints
-
-	s.router.GET("techtuesday/:techTuesdayId", techTuesdayHandler.HandleTechTuesdayGetById())
 	s.router.GET("techtuesday", techTuesdayHandler.HandleTechTuesdayGetAll())
+	s.router.GET("techtuesday/:techTuesdayId", techTuesdayHandler.HandleTechTuesdayGetById())
 	s.router.POST("techtuesday", techTuesdayHandler.HandleTechTuesdayCreate())
 	s.router.PUT("techtuesday/:techTuesdayId", techTuesdayHandler.HandleTechTuesdayUpdate())
 	s.router.DELETE("techtuesday/:techTuesdayId", techTuesdayHandler.HandleTechTuesdayDelete())
 
 	// User endpoints
-
 	s.router.GET("user", userHandler.HandlerUserGetAll())
 	s.router.GET("user/:userId", userHandler.HandleUserGetById())
 	s.router.POST("user", userHandler.HandleUserCreate())
