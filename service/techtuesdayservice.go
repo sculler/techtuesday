@@ -21,7 +21,7 @@ func NewTechTuesdayService(repository domain.ITechTuesdayRepository, logger logg
 }
 
 func (t TechTuesdayService) GetAll() ([]domain.TechTuesday, *apierror.ApiError) {
-	users, err := t.repository.GetAll()
+	techTuesdays, err := t.repository.GetAll()
 	if err != nil {
 		t.logger.Error("unable to get all tech tuesdays", zap.Error(err))
 		return nil, &apierror.ApiError{
@@ -29,11 +29,11 @@ func (t TechTuesdayService) GetAll() ([]domain.TechTuesday, *apierror.ApiError) 
 			Code: http.StatusBadRequest,
 		}
 	}
-	return users, nil
+	return techTuesdays, nil
 }
 
 func (t TechTuesdayService) GetById(id int) (*domain.TechTuesday, *apierror.ApiError) {
-	user, err := t.repository.GetById(id)
+	techTuesday, err := t.repository.GetById(id)
 	if err != nil {
 		t.logger.Error("unable to get tech tuesday by id", zap.Int("techTuesdayId", id), zap.Error(err))
 		return nil, &apierror.ApiError{
@@ -41,7 +41,7 @@ func (t TechTuesdayService) GetById(id int) (*domain.TechTuesday, *apierror.ApiE
 			Code: http.StatusBadRequest,
 		}
 	}
-	return user, nil
+	return techTuesday, nil
 }
 
 func (t TechTuesdayService) Create(techTuesday *domain.TechTuesday) (int, *apierror.ApiError) {
